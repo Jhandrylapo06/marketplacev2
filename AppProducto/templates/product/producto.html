@@ -1,0 +1,54 @@
+{% extends 'home/base.html' %}
+
+{% block title %}{{producto.titulo}} | {% endblock %}
+
+{% block content %}
+    {% if producto.imagen %}
+        
+        <figure class="image is-4by3 mb-6">
+            <img src="{{ producto.imagen.url }}">
+        </figure>
+    {% endif %}
+
+    <h1 class="title">{{producto.titulo}},${{producto.precio}}</h1>
+
+    <p class="mb-6"><span class="tag is-dark">{{producto.usuario.nombre}}</span></p>
+
+    <p>{{producto.descripcion}}</p>
+
+    <hr>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-success is-toast">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="field has-addons">
+            <div class="control">
+                <input type="number" name="quantity" value="1" class="input" min="1">
+            </div>
+
+            <div class="control">
+                <button class="button is-dark is-uppercase">Añadir al carrito</button>
+            </div>
+        </div>
+    </form>
+
+    {% if productos_similares %}
+        <hr>
+
+        <div class="columns is-multiline">
+            <div class="column is-12">
+                <h2 class="subtitle">Productos Similares</h2>
+            </div>
+            {% for producto in productos_similares %}
+                {% include 'product/partes/lista_item.html'%}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

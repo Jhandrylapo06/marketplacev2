@@ -1,0 +1,13 @@
+{% extends 'home/base.html' %}
+{% block title %}Bienvenidos |{% endblock %}
+{% block content %}
+    <div class="columns is-multiline mb-6">
+        <div class="column is-12 has-text-centered mt-6 mb-6">
+            <h2 class="is-size-3">Nuevos productos</h2>
+        </div>
+        {% for producto in newest_productos %}
+            {% include 'product/partes/lista_item.html'%}
+        {% endfor %}
+
+    </div>
+{% endblock %}

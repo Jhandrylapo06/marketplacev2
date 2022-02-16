@@ -1,0 +1,35 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Editar Vendedor | {% endblock %}
+
+{% block content %}
+    <h1 class="title">Editar Vendedor</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>Nombre de usuario</label>
+
+            <div class="control">
+                <input type="text" name="nombre" id="id_nombre" value="{{ usuario.nombre }}" class="input">
+            </div>
+
+            <p class="help">¡No es lo mismo que el nombre de usuario!</p>
+        </div>
+
+        <div class="field">
+            <label>E-mail</label>
+
+            <div class="control">
+                <input type="email" name="email" id="id_email" value="{{ usuario.created_by.email }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <button class="button is-dark is-uppercase">Guardar</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

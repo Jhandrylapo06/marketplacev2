@@ -1,0 +1,21 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Vendedores | {% endblock %}
+
+{% block content %}
+    <h1 class="title">Vendedores</h1>
+
+    <div class="columns is-multiline">
+        {% for vendor in vendors %}
+            <div class="column is-3">
+                <div class="box">
+                    <h2 class="subtitle">{{ vendor.nombre }}</h2>
+
+                    <hr>
+
+                    <a href="{% url 'vendor' vendor.id  %}" class="button is-dark is-uppercase">Ver</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

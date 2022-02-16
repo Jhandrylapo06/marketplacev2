@@ -1,0 +1,99 @@
+{% extends 'home/base.html' %}
+
+{% block title %}UsuarioAdmin | {% endblock %}
+
+{% block content %}
+    <div class="box">
+        <h1 class="title">Administracion de usuario - {{usuario.nombre}}</h1>
+        
+        <strong>Mi balance: </strong>${{ usuario.get_balance }}<br>
+        <strong>Pagada: </strong>${{ usuario.get_paid_amount }}
+
+        <hr>
+
+        <a href="{% url 'EditarUsuario_view_view' %}" class="button is-info is-uppercase">Editar</a>
+        <a href="{% url 'salir' %}" class="button is-danger is-uppercase">Salir</a>
+    </div>
+    <div class="box">
+        <h2 class="is-size-3 mb-4">Mis Productos</h2>
+
+        <a href="{% url 'añadirproducto' %}" class="button is-danger is-uppercase mb-6">Añadir Producto</a>
+        
+        
+        {% if productos %}
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for producto in productos %}
+                        <tr>
+                            <td><a href="{% url 'Producto_view' producto.categoria.slug producto.slug %}">{{ producto.titulo }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td><a href="{% url 'EditarProducto_view' producto.id %}">Editar</a></td>
+                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aun no tienes productos...</p>
+        {% endif %}
+    </div>
+
+    <div class="box">
+        <h2 class="is-size-3 mb-4">Mis Ordenes</h2>
+    
+        {% if orders %}
+            {% for order in orders %}
+                <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <h3 class="is-size-4">#{{ order.id }} - {{ order.primer_nombre }} {{ order.apellido }}</h3>
+                        </div>
+    
+                        <div class="column is-12">
+                            <b>Nombre:</b> {{ order.primer_nombre }} {{ order.apellido }}<br>
+                            <b>Address:</b> {{ order.address }}<br>
+                            <b>Codigo postal y lugar:</b> {{ order.codigopostal }} {{ order.lugar }}<br>
+                            <b>E-mail:</b> {{ order.email }}<br>
+                            <b>Telefono:</b> {{ order.telefono }}
+    
+                            <table class="table is-fullwidth mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Titulo</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Pagado</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+    
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                        {% if item.usuario == request.user.usuario %}
+                                            <tr>
+                                                <td>{{ item.producto.titulo }}</td>
+                                                <td>${{ item.producto.precio }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>{{ item.usuario_pagado|yesno:"Yes,No" }}</td>
+                                                <td>${{ item.get_total_price }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
